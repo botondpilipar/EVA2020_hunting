@@ -1,0 +1,52 @@
+\documentclass[../main.tex]{subfiles}
+
+\subsection{Esettáblázat}
+\begin{center}
+    \begin{tabular}{| m{1.3 em} | m{10 em} | m{8em} | m{0.5\textwidth} |}
+    \hline
+    \multirow{3}{*}{1.} & \multirow{3}{*}{Aklakmazás elindítása} & GIVEN: & Az alkalmazás feltelepült \\ \cline{3-4}
+                        &                                        &  WHEN: & Futtható alkalmazás elindítása  \\ \cline{3-4}
+                        &                                        &  THEN: & Megjelenik a játéktábla, melyben az alapértelmezett
+                                                                             számú és gyorsaságú játékos helyezkedik el. \\
+    \hline
+    \multirow{3}{*}{2.} & \multirow{3}{*}{Lépés} & GIVEN: & A játék aktív állaptoban van, a kontroll gombon
+                                                                 "Megállítás" felirat látható. \\ \cline{3-4}
+                        &                        &  WHEN: & Felhasználó rákattintott valamely, eddig ki nem választott, aktuális oldalon várakozó játékosra  \\ \cline{3-4}
+                        &                        &  THEN: & A kiválasztott játékos a híd várakozó oldali feléhez lép \\
+    \hline
+    \multirow{3}{*}{3.} & \multirow{3}{*}{Lépés} & GIVEN: & A játék aktív állaptoban van, a kontroll gombon 
+                                                                "Megállítás" felirat látható, valamely játékos a hídnál várakozik \\ \cline{3-4}
+                        &                        &  WHEN: & Felhasználó valamely hídnál várakozó játékosra kattint  \\ \cline{3-4}
+                        &                        &  THEN: & A hídnál várakozó játékos visszatér az aktuális oldal ki nem választott játékosaihoz \\
+    \hline
+    \multirow{3}{*}{4.} & \multirow{3}{*}{Hídon átküldés} & GIVEN: & A játéktábla aktív állapotban van, a kontroll gombon
+                                                                    "Megállítás" felirat látható, korábbról valamelyik játékos a hídnál várakozik \\ \cline{3-4}
+                        &                                        &  WHEN: & Felhasználó a "Mehet" gombra kattint  \\ \cline{3-4}
+                        &                                        &  THEN: & A híd adott oldalán az összes játékos átkel a hídon, a legnagyobb
+                                                                    pontszámú (leglassab) játékos átkelési ideje a játék összpontjához hozzáadódik \\
+    \hline
+    \multirow{3}{*}{5.} & \multirow{3}{*}{Beaállítások kezelése} & GIVEN: & Az alkalmazás fut \\ \cline{3-4}
+                        &                                        &  WHEN: & Felhasználó az "Beállítások" gombra kattint  \\ \cline{3-4}
+                        &                                        &  THEN: & Megjelenik a beállítások ablak, ahol a kiválasztott játékosszámokkal kezdődik új játék,
+                                                                            minden játékos a kezdeti oldalon fog várakozni \\
+    \hline
+    \end{tabular}
+\end{center}
+
+\subsection{Felületi terv}
+
+A játék egy háttérrel rendelkező \emph{Widget}-ben zajlik, melynek jobb alsó sarkában egy \emph{GroupBox} található,
+benne a játék vezérléséhez szükséges gombok:
+\begin{itemize}
+    \item Új játék gomb
+    \item Beaállítások gomb
+    \item Megállítás/Folytatás gomb
+\end{itemize}
+A beállítások vagy új játék gomb hatására megjelenik a beállítások ablak, egy \emph{DialogBox} ahol \emph{SpinBox}-ok segítségével állíthatjuk
+az idős, fiatal és középkorú kereskedők számát.
+
+Ha egy játékos megnyeri a játékot, egy \emph{MessageBox} tájékoztatja az elért pontszámról.
+
+A játékosok eleinte a bal alsó sarokban várakoznak, majd kiválasztva a megfelelő part oldali hídfőhöz ugranak,
+majd átküldéskor a jobb felső sarokban foglalnak helyet. A mozgatási állapotokat \emph{Layout}-ok reprezentálják.
+
