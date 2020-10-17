@@ -1,0 +1,53 @@
+\documentclass[11pt, a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[hungarian]{babel}
+\usepackage{t1enc}
+\usepackage[english]{isodate}
+\usepackage[parfill]{parskip}
+\usepackage{libertine}
+\usepackage{graphicx}
+\usepackage{multicol}
+\usepackage{subfiles}
+\usepackage{geometry}
+\usepackage{hyperref}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{color, colortbl}
+
+\geometry{
+    a4paper,
+    total={170mm,257mm},
+    left=19mm,
+    right=19mm,
+    top=24mm,
+    bottom=24mm
+}
+
+\definecolor{TableHeaderBlue}{rgb}{0.294, 0.654, 0.988}
+
+\renewcommand{\arraystretch}{1.6}
+
+\graphicspath{{./images/}}
+
+\pagenumbering{Roman}
+
+\pagenumbering{arabic}
+
+\begin{document}
+
+\tableofcontents
+
+
+\subfile{chapters/1_signature}
+
+\section{Feladat elemzése}
+\subfile{chapters/2_problem_analysis}
+
+\section{Felhasználói esetek}
+\subfile{chapters/3_use_case}
+
+\section{Logikai terv}
+\subfile{chapters/4_technical_analysis}
+
+\end{document}
