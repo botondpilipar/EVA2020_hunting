@@ -4,6 +4,5 @@
 #include <QDataStream>
 #include <QFile>
 #include <QRegExp>
-#include <
 
 #endif // ACCESS_PCH_H

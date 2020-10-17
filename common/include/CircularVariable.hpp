@@ -6,7 +6,7 @@
 #include <QDataStreamSerializable.h>
 
 template<class T,
-         typename std::enable_if<
+         typename = typename std::enable_if<
              std::is_destructible_v<T> &&
              std::is_constructible_v<T> &&
              std::is_copy_constructible_v<T> &&
@@ -37,7 +37,7 @@ public:
             onRewind();
         }
         ++mCurrent;
-        return this;
+        return *this;
     }
     CircularVariable& advanceBackward()
     {
@@ -47,10 +47,10 @@ public:
             onRewind();
         }
         --mCurrent;
-        return this;
+        return *this;
     }
-    inline CircularVariable& operator++() { return advanceForward(); }
-    inline CircularVariable& operator--() { return advanceBackward(); }
+    inline CircularVariable& operator++(int) { return advanceForward(); }
+    inline CircularVariable& operator--(int) { return advanceBackward(); }
 
     void setMin(const T& min) { mMin = min; }
     void setMax(const T& max) { mMax = max; }
@@ -58,7 +58,7 @@ public:
 
     inline const T& current() const { return mCurrent; }
 
-    void onRewind() = 0;
+    virtual void onRewind() {}
 private:
     T mCurrent;
     T mMin;
