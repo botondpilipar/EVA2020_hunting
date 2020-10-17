@@ -4,21 +4,29 @@
 #include <exception>
 #include <string>
 
+namespace
+{
+    const std::string generalMessage = "Unable to handle file operation for ";
+}
 using namespace std::literals::string_literals;
 
 class FileException : public std::exception
 {
 public:
-    FileException(std::string fileName) : mFileName(fileName) {}
+    FileException(std::string fileName) :
+        mFileName(fileName),
+        mMessage(generalMessage)
+    {
+        mMessage += mFileName;
+    }
     const char* what() const noexcept override
     {
-        std::string generalMessage = "Unable to handle file operation for ";
-        generalMessage += mFileName;
-        return generalMessage.c_str();
+        return mMessage.c_str();
     }
 
 private:
     std::string mFileName;
+    std::string mMessage;
 };
 
 #endif // FILEEXCEPTION_H

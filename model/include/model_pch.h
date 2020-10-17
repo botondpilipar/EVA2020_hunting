@@ -8,4 +8,7 @@
 #include <QMap>
 #include <QVector>
 #include <QList>
+#include <QtGlobal>
+#include <QtMath>
+#include <QSet>
 #endif // MODEL_PCH_H
