@@ -21,6 +21,7 @@ public:
     bool deserialize(QDataStreamSerializable& input, const QString& fileName);
 
     QStringList availableFiles(const QRegExp& regex = saveFileRegex);
+    QString getWorkingDirectory() const;
     static QString generateFileName();
     static inline QDateTime lastFileModification(QString& fileName) { return QFileInfo(fileName).lastModified(); }
 

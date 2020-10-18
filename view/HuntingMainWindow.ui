@@ -13,8 +13,116 @@
   <property name="windowTitle">
    <string>HuntingMainWindow</string>
   </property>
-  <widget class="QWidget" name="centralwidget"/>
-  <widget class="QMenuBar" name="menubar"/>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QGroupBox" name="groupBox">
+    <property name="geometry">
+     <rect>
+      <x>660</x>
+      <y>90</y>
+      <width>120</width>
+      <height>331</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string/>
+    </property>
+    <widget class="QPushButton" name="newGameButton">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>10</y>
+       <width>102</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Új játék</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pauseContinueButton">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>50</y>
+       <width>102</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Megállít</string>
+     </property>
+    </widget>
+    <widget class="QLCDNumber" name="pointCounter">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>270</y>
+       <width>101</width>
+       <height>41</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="dimension3Button">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>130</y>
+       <width>102</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>3x3</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="dimension5Button">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>170</y>
+       <width>102</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>5x5</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="dimension7Button">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>210</y>
+       <width>102</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>7x7</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="playerArea" native="true">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>20</y>
+      <width>631</width>
+      <height>511</height>
+     </rect>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>800</width>
+     <height>21</height>
+    </rect>
+   </property>
+  </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
  <resources/>

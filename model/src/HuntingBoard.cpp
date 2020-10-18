@@ -13,8 +13,6 @@ HuntingBoard::HuntingBoard(Serializer& serializer, DimensionQ& dimension)
     mStepsTaken = 0;
     mMiddle = BoardUtility::middlePosition(dimension);
     mCorners = BoardUtility::cornerPositions(dimension);
-
-    startNewGame();
 }
 
 void HuntingBoard::initialize(const HuntingBoardData& representation)
@@ -27,6 +25,7 @@ void HuntingBoard::initialize(const HuntingBoardData& representation)
     mMiddle = BoardUtility::middlePosition(mDimension);
     mCorners = BoardUtility::cornerPositions(mDimension);
 
+    emit dimensionChangedSignal(mDimension);
     emit boardChangedSignal(std::make_shared<PlayerCoordinates>(mPlayerMap));
     emit stepsTakenChangedSignal(mStepsTaken);
 }
@@ -47,6 +46,7 @@ void HuntingBoard::setDimensions(DimensionQ &dimension)
     mCorners = BoardUtility::cornerPositions(mDimension);
     mMaxSteps = mDimension.first;
 
+    emit dimensionChangedSignal(mDimension);
     startNewGame();
 }
 void HuntingBoard::startNewGame()
@@ -57,6 +57,8 @@ void HuntingBoard::startNewGame()
     mPlayerMap.push_back(QPair<DimensionQ, PlayerType>(mMiddle, PlayerType::PREY));
 
     for(auto position : mCorners) { mPlayerMap.push_back(QPair<DimensionQ, PlayerType>(position, PlayerType::HUNTER)); }
+
+    emit dimensionChangedSignal(mDimension);
     emit boardChangedSignal(PlayerCoordinatesPtr(new PlayerCoordinates(mPlayerMap)));
 }
 
