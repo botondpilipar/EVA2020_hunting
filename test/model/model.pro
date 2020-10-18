@@ -11,6 +11,18 @@ CONFIG -= app_bundle
 TARGET = board_test
 TEMPLATE = app
 
-SOURCES += \
-    TestModel.cpp
+SOURCES +=
 
+
+unix|win32: LIBS += -L$$OUT_PWD/../../access/ -laccess
+
+INCLUDEPATH += $$PWD/../../access
+DEPENDPATH += $$PWD/../../access
+
+unix|win32: LIBS += -L$$OUT_PWD/../../model/ -lmodel
+
+INCLUDEPATH += $$PWD/../../model
+DEPENDPATH += $$PWD/../../model
+
+SOURCES += \
+    ModelTest.cpp

@@ -51,6 +51,7 @@ public:
 
     void movePlayer(DimensionQ& from, DimensionQ& to);
     static hunting::PlayerType getNextMove(hunting::PlayerType);
+    bool isGameOverScenario() const;
 
 private:
     Serializer& mSerializer;

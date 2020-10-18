@@ -30,7 +30,9 @@ QVector<DimensionQ> BoardUtility::cornerPositions(DimensionQ& boardDimensions)
 bool BoardUtility::isNeighboring(DimensionQ& l, DimensionQ& r)
 {
     if(!(isValidDimension(l) && isValidDimension(r)))  { return false; }
-    qreal totalDifference = qFabs(l.first - r.first) + qFabs(l.second - r.second);
+    auto xDiff = static_cast<std::int64_t>(l.first - r.first);
+    auto yDiff = static_cast<std::int64_t>(l.second - r.second);
+    auto totalDifference = abs(xDiff) + abs(yDiff);
     return (totalDifference == 1);
 }
 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 4.13.0, 2020-10-17T15:03:08. -->
+<!-- Written by QtCreator 4.13.0, 2020-10-18T13:11:45. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -64,7 +64,32 @@
     <value type="bool" key="AutoTest.Framework.QtQuickTest">true</value>
     <value type="bool" key="AutoTest.Framework.QtTest">true</value>
    </valuemap>
-   <valuemap type="QVariantMap" key="AutoTest.CheckStates"/>
+   <valuemap type="QVariantMap" key="AutoTest.CheckStates">
+    <value type="Qt::CheckState" key="/home/pilard/Documents/Egyetem/felevek/5_felev/esemenyvezerelt_alkalmazasok/beadandok/EVA2020_hunting/test/access/AccessTest.cpp:SerializerTest">Checked</value>
+    <value type="Qt::CheckState" key="/home/pilard/Documents/Egyetem/felevek/5_felev/esemenyvezerelt_alkalmazasok/beadandok/EVA2020_hunting/test/access/AccessTest.cpp:cleanupTestCase">Unchecked</value>
+    <value type="Qt::CheckState" key="/home/pilard/Documents/Egyetem/felevek/5_felev/esemenyvezerelt_alkalmazasok/beadandok/EVA2020_hunting/test/access/AccessTest.cpp:init">Unchecked</value>
+    <value type="Qt::CheckState" key="/home/pilard/Documents/Egyetem/felevek/5_felev/esemenyvezerelt_alkalmazasok/beadandok/EVA2020_hunting/test/access/AccessTest.cpp:initTestCase">Unchecked</value>
+    <value type="Qt::CheckState" key="/home/pilard/Documents/Egyetem/felevek/5_felev/esemenyvezerelt_alkalmazasok/beadandok/EVA2020_hunting/test/access/AccessTest.cpp:testDeserialize">Checked</value>
+    <value type="Qt::CheckState" key="/home/pilard/Documents/Egyetem/felevek/5_felev/esemenyvezerelt_alkalmazasok/beadandok/EVA2020_hunting/test/access/AccessTest.cpp:testGenerateFileName">Checked</value>
+    <value type="Qt::CheckState" key="/home/pilard/Documents/Egyetem/felevek/5_felev/esemenyvezerelt_alkalmazasok/beadandok/EVA2020_hunting/test/access/AccessTest.cpp:testGetAvailableFiles">Checked</value>
+    <value type="Qt::CheckState" key="/home/pilard/Documents/Egyetem/felevek/5_felev/esemenyvezerelt_alkalmazasok/beadandok/EVA2020_hunting/test/access/AccessTest.cpp:testSerialize">Checked</value>
+    <value type="Qt::CheckState" key="/home/pilard/Documents/Egyetem/felevek/5_felev/esemenyvezerelt_alkalmazasok/beadandok/EVA2020_hunting/test/access:access">Checked</value>
+    <value type="Qt::CheckState" key="/home/pilard/Documents/Egyetem/felevek/5_felev/esemenyvezerelt_alkalmazasok/beadandok/EVA2020_hunting/test/model/ModelTest.cpp:ModelTest">Checked</value>
+    <value type="Qt::CheckState" key="/home/pilard/Documents/Egyetem/felevek/5_felev/esemenyvezerelt_alkalmazasok/beadandok/EVA2020_hunting/test/model/ModelTest.cpp:cleanupTestCase">Unchecked</value>
+    <value type="Qt::CheckState" key="/home/pilard/Documents/Egyetem/felevek/5_felev/esemenyvezerelt_alkalmazasok/beadandok/EVA2020_hunting/test/model/ModelTest.cpp:init">Unchecked</value>
+    <value type="Qt::CheckState" key="/home/pilard/Documents/Egyetem/felevek/5_felev/esemenyvezerelt_alkalmazasok/beadandok/EVA2020_hunting/test/model/ModelTest.cpp:initTestCase">Unchecked</value>
+    <value type="Qt::CheckState" key="/home/pilard/Documents/Egyetem/felevek/5_felev/esemenyvezerelt_alkalmazasok/beadandok/EVA2020_hunting/test/model/ModelTest.cpp:testContinueGame">Checked</value>
+    <value type="Qt::CheckState" key="/home/pilard/Documents/Egyetem/felevek/5_felev/esemenyvezerelt_alkalmazasok/beadandok/EVA2020_hunting/test/model/ModelTest.cpp:testGetInitialDimensions">Checked</value>
+    <value type="Qt::CheckState" key="/home/pilard/Documents/Egyetem/felevek/5_felev/esemenyvezerelt_alkalmazasok/beadandok/EVA2020_hunting/test/model/ModelTest.cpp:testGetSetDimensions">Checked</value>
+    <value type="Qt::CheckState" key="/home/pilard/Documents/Egyetem/felevek/5_felev/esemenyvezerelt_alkalmazasok/beadandok/EVA2020_hunting/test/model/ModelTest.cpp:testInitialize">Checked</value>
+    <value type="Qt::CheckState" key="/home/pilard/Documents/Egyetem/felevek/5_felev/esemenyvezerelt_alkalmazasok/beadandok/EVA2020_hunting/test/model/ModelTest.cpp:testMovePlayer">Checked</value>
+    <value type="Qt::CheckState" key="/home/pilard/Documents/Egyetem/felevek/5_felev/esemenyvezerelt_alkalmazasok/beadandok/EVA2020_hunting/test/model/ModelTest.cpp:testNextToMove">Checked</value>
+    <value type="Qt::CheckState" key="/home/pilard/Documents/Egyetem/felevek/5_felev/esemenyvezerelt_alkalmazasok/beadandok/EVA2020_hunting/test/model/ModelTest.cpp:testPauseGame">Checked</value>
+    <value type="Qt::CheckState" key="/home/pilard/Documents/Egyetem/felevek/5_felev/esemenyvezerelt_alkalmazasok/beadandok/EVA2020_hunting/test/model/ModelTest.cpp:testPlayerPositionOnNewGame">Checked</value>
+    <value type="Qt::CheckState" key="/home/pilard/Documents/Egyetem/felevek/5_felev/esemenyvezerelt_alkalmazasok/beadandok/EVA2020_hunting/test/model/ModelTest.cpp:testSave">Checked</value>
+    <value type="Qt::CheckState" key="/home/pilard/Documents/Egyetem/felevek/5_felev/esemenyvezerelt_alkalmazasok/beadandok/EVA2020_hunting/test/model/ModelTest.cpp:testStartNewGame">Checked</value>
+    <value type="Qt::CheckState" key="/home/pilard/Documents/Egyetem/felevek/5_felev/esemenyvezerelt_alkalmazasok/beadandok/EVA2020_hunting/test/model:model">Checked</value>
+   </valuemap>
    <value type="int" key="AutoTest.RunAfterBuild">0</value>
    <value type="bool" key="AutoTest.UseGlobal">true</value>
    <valuelist type="QVariantList" key="ClangCodeModel.CustomCommandLineKey"/>

@@ -17,5 +17,6 @@
 #include <limits>
 #include <iterator>
 #include <set>
+#include <cmath>
 
 #endif
