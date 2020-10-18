@@ -41,6 +41,12 @@ struct HuntingBoardData
         s >> dimension >> maxStep >> stepsTaken >> nextToMove >> playerSet;
         return s;
     }
+
+    bool operator==(const HuntingBoardData& other) const
+    {
+        return std::tie(playerSet, dimension, maxStep, stepsTaken, nextToMove) ==
+                std::tie(other.playerSet, other.dimension, other.maxStep, other.stepsTaken, other.nextToMove);
+    }
 };
 
 }

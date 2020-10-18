@@ -14,6 +14,7 @@ HuntingBoard::HuntingBoard(Serializer& serializer, DimensionQ& dimension)
     mMiddle = BoardUtility::middlePosition(dimension);
     mCorners = BoardUtility::cornerPositions(dimension);
 
+    startNewGame();
 }
 
 void HuntingBoard::initialize(const HuntingBoardData& representation)
@@ -25,6 +26,9 @@ void HuntingBoard::initialize(const HuntingBoardData& representation)
     mStepsTaken = representation.stepsTaken;
     mMiddle = BoardUtility::middlePosition(mDimension);
     mCorners = BoardUtility::cornerPositions(mDimension);
+
+    emit boardChangedSignal(std::make_shared<PlayerCoordinates>(mPlayerMap));
+    emit stepsTakenChangedSignal(mStepsTaken);
 }
 
 HuntingBoardData* HuntingBoard::save() const
@@ -42,7 +46,8 @@ void HuntingBoard::setDimensions(DimensionQ &dimension)
     mMiddle = BoardUtility::middlePosition(mDimension);
     mCorners = BoardUtility::cornerPositions(mDimension);
     mMaxSteps = mDimension.first;
-    ;
+
+    startNewGame();
 }
 void HuntingBoard::startNewGame()
 {
@@ -51,7 +56,7 @@ void HuntingBoard::startNewGame()
     mPlayerMap.clear();
     mPlayerMap.push_back(QPair<DimensionQ, PlayerType>(mMiddle, PlayerType::PREY));
 
-    for(auto position : mCorners) { mPlayerMap.push_back(QPair<DimensionQ, PlayerType>(position, PlayerType::PREY)); }
+    for(auto position : mCorners) { mPlayerMap.push_back(QPair<DimensionQ, PlayerType>(position, PlayerType::HUNTER)); }
     emit boardChangedSignal(PlayerCoordinatesPtr(new PlayerCoordinates(mPlayerMap)));
 }
 
@@ -77,7 +82,13 @@ void HuntingBoard::movePlayer(DimensionQ& from, DimensionQ& to)
     if(!isSpotOccupied)
     {
         moveCandidate->first = to;
+        emit boardChangedSignal(std::make_shared<PlayerCoordinates>(moveCandidate, moveCandidate + 1));
+        emit stepsTakenChangedSignal(++mStepsTaken);
+    }
+    else if(isGameOverScenario)
+    {
         ++mStepsTaken;
+        emit gameOverSignal(mStepsTaken, PlayerType::HUNTER);
     }
 
     if(mMaxSteps == mStepsTaken)
@@ -85,7 +96,6 @@ void HuntingBoard::movePlayer(DimensionQ& from, DimensionQ& to)
         emit gameOverSignal(mStepsTaken, isGameOverScenario ? PlayerType::HUNTER :
                                                                PlayerType::PREY);
     }
-
     mCurrentlyMoving = getNextMove(mCurrentlyMoving);
 }
 
@@ -98,4 +108,13 @@ PlayerType HuntingBoard::getNextMove(PlayerType type)
         case PlayerType::PREY:
             return PlayerType::HUNTER;
     }
+}
+
+bool HuntingBoard::isGameOverScenario() const
+{
+    auto prey = std::find_if(mPlayerMap.begin(), mPlayerMap.end(),
+                             [](const auto& p) { return p.second == PREY; });
+    auto hunter = std::find_if(mPlayerMap.begin(), mPlayerMap.end(),
+                               [prey](const auto& p) { return p.first == prey->first; });
+    return (hunter != mPlayerMap.end());
 }
