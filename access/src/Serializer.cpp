@@ -1,16 +1,19 @@
 #include "Serializer.h"
 #include <QDateTime>
+#include <FileException.h>
 
-static const char * const saveDirectoryPath = "./data";
+static const char * const saveDirectoryPath = "data";
 static const char* const saveFileExtension = ".bin";
 
-Serializer::Serializer() : mWorkingDirectory(saveDirectoryPath)
+Serializer::Serializer() : mWorkingDirectory(QDir::currentPath())
 {
-    if( !mWorkingDirectory.exists() )
+    if( !mWorkingDirectory.exists(saveDirectoryPath) )
     {
-        mWorkingDirectory.mkdir(saveDirectoryPath);
-        mWorkingDirectory.setPath(saveDirectoryPath);
+        bool successfull = mWorkingDirectory.mkdir(saveDirectoryPath);
+        if(!successfull) { throw DirectoryException(saveDirectoryPath); }
+
     }
+    mWorkingDirectory.setCurrent(mWorkingDirectory.relativeFilePath(saveDirectoryPath));
 }
 void Serializer::serialize(const QDataStreamSerializable& input, const QString& fileName)
 {
@@ -18,10 +21,8 @@ void Serializer::serialize(const QDataStreamSerializable& input, const QString& 
     QFile outputFile(fileName);
     if( !outputFile.open(QIODevice::WriteOnly) ) { throw FileException(fileName.toStdString()); }
 
-    QByteArray byteArray;
-    QDataStream dataStream(&byteArray, QIODevice::ReadWrite);
+    QDataStream dataStream(&outputFile);
     dataStream << input;
-    outputFile.write(byteArray);
 
     outputFile.close();
 }
@@ -32,8 +33,7 @@ bool Serializer::deserialize(QDataStreamSerializable& input, const QString& file
     if ( !inputFile.open(QIODevice::ReadOnly) ) { return false; }
 
     QByteArray byteArray;
-    QDataStream dataStream(&byteArray, QIODevice::ReadWrite);
-    dataStream << inputFile.readAll();
+    QDataStream dataStream(&inputFile);
     dataStream >> input;
 
     inputFile.close();

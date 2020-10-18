@@ -3,8 +3,8 @@
 QT += core
 
 TEMPLATE = lib
-TARGET = logic
-DEFINES = LOGIC
+TARGET = model
+DEFINES = MODEL
 
 HEADERS += \
     include/BoardUtility.h \

@@ -11,4 +11,6 @@ CONFIG -= app_bundle
 TARGET = board_test
 TEMPLATE = app
 
-SOURCES += main.cpp
+SOURCES += \
+    TestModel.cpp
+
