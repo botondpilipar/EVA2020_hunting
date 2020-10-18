@@ -8,6 +8,6 @@ SUBDIRS += view \
             test \
             dependency
 
+view.depends = model
 test.depends = model
-logic.depends = access
-logic.depends = common
+model.depends = access

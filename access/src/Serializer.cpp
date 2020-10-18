@@ -54,3 +54,8 @@ QString Serializer::generateFileName()
 {
     return QDateTime::currentDateTime().toString(Qt::ISODate).remove(":") + saveFileExtension;
 }
+QString Serializer::getWorkingDirectory() const
+{
+    return mWorkingDirectory.path();
+}
+

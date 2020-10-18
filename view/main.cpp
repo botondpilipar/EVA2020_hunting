@@ -1,4 +1,4 @@
-#include "HungingMainWindow.h"
+#include "HuntingMainWindow.h"
 
 #include <QApplication>
 

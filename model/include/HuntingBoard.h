@@ -69,6 +69,7 @@ signals:
     void gameOverSignal(quint64 finalSteps, PlayerType winningSide);
     void boardChangedSignal(PlayerCoordinatesPtr newSetup);
     void stepsTakenChangedSignal(quint64 stepsTaken);
+    void dimensionChangedSignal(DimensionQ newDimensions);
 
 };
 }
