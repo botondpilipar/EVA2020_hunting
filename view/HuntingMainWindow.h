@@ -9,6 +9,7 @@
 #include <QBrush>
 #include <QPainter>
 #include <QStateMachine>
+#include <QMouseEvent>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class HuntingMainWindow; }
@@ -29,8 +30,8 @@ protected:
     virtual void paintEvent(QPaintEvent*) override;
 
     virtual void fillBoardCells();
-    virtual QRect coordinateToRectangle(const QRect& area, DimensionQ coordinate) const;
-    virtual DimensionQ rectangeToCoordinate(const QRect& area, QRect& rect) const;
+    virtual QRect coordinateToRectangle(const QRect& area, const DimensionQ coordinate) const;
+    virtual DimensionQ rectangeToCoordinate(const QRect& area, const QRect& rect) const;
 
 protected slots:
     void onBoardChange(PlayerCoordinatesPtr);
@@ -45,12 +46,13 @@ private:
     HuntingBoard mBoard;
 
     QPen mBoardSeparator;
-    QPen mPlayerOutline;
     QBrush mPreyFiller;
     QBrush mHunterFiller;
 
     QVector<QRect> mBoardCells;
     QVector<QRect> mHunters;
     QRect mPrey;
+
+    DimensionQ from;
 };
 #endif // HUNTINGMAINWINDOW_H

@@ -9,7 +9,6 @@ HuntingMainWindow::HuntingMainWindow(QWidget *parent)
     , mBoardDimension(5, 5)
     , mBoard(mSerializer, mBoardDimension)
     , mBoardSeparator(Qt::darkBlue)
-    , mPlayerOutline(Qt::black)
     , mPreyFiller(Qt::green)
     , mHunterFiller(Qt::red)
 {
@@ -27,8 +26,7 @@ HuntingMainWindow::HuntingMainWindow(QWidget *parent)
 
 
     mFileChooserDialog.setDisplayedDirectory(mSerializer.getWorkingDirectory());
-    mBoardSeparator.setWidth(2);
-    mPlayerOutline.setWidth(2);
+    mBoardSeparator.setWidth(1);
 
     mBoard.startNewGame();
 }
@@ -40,11 +38,24 @@ HuntingMainWindow::~HuntingMainWindow()
 
 void HuntingMainWindow::mousePressEvent(QMouseEvent* event)
 {
-
+    const QPoint at(event->globalX(), event->globalY());
+    auto rectIt = std::find_if(mBoardCells.cbegin(), mBoardCells.cend(),
+                               [at] (const QRect& rect) { return rect.contains(at); });
+    if(rectIt != mBoardCells.end())
+    {
+        from = rectangeToCoordinate(ui->playerArea->geometry(), *rectIt);
+    }
 }
 void HuntingMainWindow::mouseReleaseEvent(QMouseEvent* event)
 {
-
+    const QPoint at(event->globalX(), event->globalY());
+    auto rectIt = std::find_if(mBoardCells.cbegin(), mBoardCells.cend(),
+                               [at] (const QRect& rect) { return rect.contains(at); });
+    if(rectIt != mBoardCells.end())
+    {
+        DimensionQ to = rectangeToCoordinate(ui->playerArea->geometry(), *rectIt);
+        mBoard.movePlayer(from, to);
+    }
 }
 
 void HuntingMainWindow::fillBoardCells()
@@ -90,7 +101,7 @@ void HuntingMainWindow::paintEvent(QPaintEvent* event)
     boardPainter.drawEllipse(mPrey);
 }
 
-QRect HuntingMainWindow::coordinateToRectangle(const QRect& area, DimensionQ coordinate) const
+QRect HuntingMainWindow::coordinateToRectangle(const QRect& area, const DimensionQ coordinate) const
 {
     const int horizontalStep = area.width() / mBoardDimension.first;
     const int verticalStep = area.height() / mBoardDimension.second;
@@ -101,7 +112,7 @@ QRect HuntingMainWindow::coordinateToRectangle(const QRect& area, DimensionQ coo
     return QRect(topLeft, rightBottom);
 }
 
-DimensionQ HuntingMainWindow::rectangeToCoordinate(const QRect& area, QRect& rect) const
+DimensionQ HuntingMainWindow::rectangeToCoordinate(const QRect& area, const QRect& rect) const
 {
     const int verticalStep = area.height() / mBoardDimension.second;
     const int horizontalStep = area.width() / mBoardDimension.first;
