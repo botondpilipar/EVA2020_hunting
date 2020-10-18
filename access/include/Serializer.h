@@ -1,14 +1,7 @@
 #ifndef SERIALIZER_H
 #define SERIALIZER_H
 
-#include <QString>
-#include <QVariant>
-#include <QDataStream>
-#include <QFileDevice>
-#include <QBuffer>
-#include <QFile>
-#include <QRegExp>
-#include <QDir>
+#include <access_pch.h>
 
 #include <memory>
 #include <QDataStreamSerializable.h>
@@ -16,7 +9,7 @@
 
 namespace
 {
-const QRegExp saveFileRegex{"*.bat"};
+const QRegExp saveFileRegex{".*\.bin"};
 }
 
 class Serializer
@@ -29,6 +22,7 @@ public:
 
     QStringList availableFiles(const QRegExp& regex = saveFileRegex);
     static QString generateFileName();
+    static inline QDateTime lastFileModification(QString& fileName) { return QFileInfo(fileName).lastModified(); }
 
 private:
     QDir mWorkingDirectory;

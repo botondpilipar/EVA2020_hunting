@@ -1,3 +1,4 @@
+#include <QtTest>
 
 int main()
 {

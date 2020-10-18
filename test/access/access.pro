@@ -12,4 +12,10 @@ TARGET = board_test
 TEMPLATE = app
 
 SOURCES += \
-    main.cpp
+    AccessTest.cpp
+
+
+unix|win32: LIBS += -L$$OUT_PWD/../../access/ -laccess
+
+INCLUDEPATH += $$PWD/../../access
+DEPENDPATH += $$PWD/../../access
