@@ -8,14 +8,15 @@ FileChooserDialog::FileChooserDialog()
 {
     ui->setupUi(this);
     this->setWindowTitle("Choose file");
-    QFileSystemModel* model = new QFileSystemModel;
-    auto modelIndex = model->setRootPath(mCurrentDirectory.path());
+    auto modelIndex = mFileSystemModel.setRootPath(mCurrentDirectory.path());
 
-    ui->fileListView->setModel(model);
+    ui->fileListView->setModel(&mFileSystemModel);
     ui->fileListView->setRootIndex(modelIndex);
 }
 
 void FileChooserDialog::setDisplayedDirectory(const QString& directory)
 {
     mCurrentDirectory.setCurrent(directory);
+    ui->fileListView->setRootIndex(mFileSystemModel.index(directory));
+
 }

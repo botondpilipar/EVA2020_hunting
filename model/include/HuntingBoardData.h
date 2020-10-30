@@ -9,7 +9,7 @@
 namespace kd417d {
 namespace eva {
 
-struct HuntingBoardData
+struct HuntingBoardData : public QDataStreamSerializable
 {
 
     HuntingBoardData() = default;
@@ -31,12 +31,12 @@ struct HuntingBoardData
     quint64 stepsTaken;
     hunting::PlayerType nextToMove;
 
-    virtual QDataStream& serialize(QDataStream& s) const
+    virtual QDataStream& serialize(QDataStream& s) const override
     {
         s << dimension << maxStep << stepsTaken << nextToMove << playerSet;
         return s;
     }
-    virtual QDataStream& deserialize(QDataStream& s)
+    virtual QDataStream& deserialize(QDataStream& s) override
     {
         s >> dimension >> maxStep >> stepsTaken >> nextToMove >> playerSet;
         return s;
