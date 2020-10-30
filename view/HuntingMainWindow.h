@@ -27,7 +27,9 @@ public:
 protected:
     virtual void mousePressEvent(QMouseEvent* event) override;
     virtual void mouseReleaseEvent(QMouseEvent* event) override;
+    virtual void mouseMoveEvent(QMouseEvent* event) override;
     virtual void paintEvent(QPaintEvent*) override;
+    virtual void keyPressEvent(QKeyEvent* event) override;
 
     virtual void fillBoardCells();
     virtual QRect coordinateToRectangle(const QRect& area, const DimensionQ coordinate) const;
@@ -58,6 +60,9 @@ private:
     QVector<QRect> mHunters;
     QRect mPrey;
 
-    DimensionQ from;
+    // Utility
+    QRect from;
+    bool isSelectionActive;
+    void graphicStep(const QRect& from, const QRect& to);
 };
 #endif // HUNTINGMAINWINDOW_H
