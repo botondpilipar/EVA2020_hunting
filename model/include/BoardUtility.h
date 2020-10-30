@@ -10,7 +10,7 @@ public:
     static DimensionQ middlePosition(const DimensionQ& boardDimensions);
     static QVector<DimensionQ> cornerPositions(const DimensionQ& boardDimension);
     static bool isNeighboring(const DimensionQ& l, const DimensionQ& r);
-    static bool isValidDimension(const DimensionQ& p);
+    static bool isValidDimension(const DimensionQ& p, const DimensionQ& bounds);
 
     static constexpr DimensionType smallestPosition() { return 1; }
 };

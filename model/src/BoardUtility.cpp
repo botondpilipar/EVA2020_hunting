@@ -2,8 +2,6 @@
 
 DimensionQ BoardUtility::middlePosition(const DimensionQ& boardDimensions)
 {
-    if(!isValidDimension(boardDimensions)) { return {}; }
-
     DimensionQ returnDimensions;
     bool horizontallyEven = boardDimensions.first % 2 == 0;
     bool verticallyEven = boardDimensions.second % 2 == 0;
@@ -19,8 +17,6 @@ DimensionQ BoardUtility::middlePosition(const DimensionQ& boardDimensions)
 
 QVector<DimensionQ> BoardUtility::cornerPositions(const DimensionQ& boardDimensions)
 {
-    if(!isValidDimension(boardDimensions)) { return {}; }
-
     return {    DimensionQ(1, boardDimensions.second),
                 DimensionQ(boardDimensions.first, boardDimensions.second),
                 DimensionQ(1, 1),
@@ -29,14 +25,16 @@ QVector<DimensionQ> BoardUtility::cornerPositions(const DimensionQ& boardDimensi
 
 bool BoardUtility::isNeighboring(const DimensionQ& l, const DimensionQ& r)
 {
-    if(!(isValidDimension(l) && isValidDimension(r)))  { return false; }
     auto xDiff = static_cast<std::int64_t>(l.first - r.first);
     auto yDiff = static_cast<std::int64_t>(l.second - r.second);
     auto totalDifference = abs(xDiff) + abs(yDiff);
     return (totalDifference == 1);
 }
 
-bool BoardUtility::isValidDimension(const DimensionQ &p)
+bool BoardUtility::isValidDimension(const DimensionQ &p, const DimensionQ& bounds)
 {
-    return (p.first >= smallestPosition() && p.second >= smallestPosition());
+    return (p.first >= smallestPosition() &&
+            p.first <= bounds.first &&
+            p.second >= smallestPosition() &&
+            p.second <= bounds.second);
 }

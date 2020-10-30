@@ -3,6 +3,7 @@
 #include <QBrush>
 #include <QDrag>
 #include <QCommonStyle>
+#include <QMessageBox>
 
 #include <BoardGraphicUtility.h>
 
@@ -167,13 +168,13 @@ void HuntingMainWindow::paintEvent(QPaintEvent* event)
 
     for(const auto& row : mBoardCells) { boardPainter.drawRects(row); }
 
-    // hunters
-    boardPainter.setBrush(mHunterFiller);
-    for(const auto& dim : mHunters) { boardPainter.drawEllipse(mBoardCells.at(dim.second).at(dim.first)); }
-
     // prey
     boardPainter.setBrush(mPreyFiller);
     boardPainter.drawEllipse(mBoardCells.at(mPrey.second).at(mPrey.first));
+
+    // hunters
+    boardPainter.setBrush(mHunterFiller);
+    for(const auto& dim : mHunters) { boardPainter.drawEllipse(mBoardCells.at(dim.second).at(dim.first)); }
 }
 
 QRect HuntingMainWindow::coordinateToRectangle(const QRect& area, const DimensionQ coordinate) const
@@ -255,7 +256,16 @@ void HuntingMainWindow::onStepsChanges(quint64 stepCount)
 {
     ui->pointCounter->display(static_cast<int>(stepCount));
 }
-void HuntingMainWindow::onGameOver(quint64, hunting::PlayerType){}
+void HuntingMainWindow::onGameOver(quint64 steps, hunting::PlayerType side)
+{
+    using namespace hunting;
+    QString winningSide = side == PlayerType::HUNTER ? "Vadász" : "Préda";
+    QMessageBox message(QMessageBox::Information, "Játék vége, ", QString::number(steps) + " lépésből nyert: " + winningSide,
+                QMessageBox::Ok);
+
+    message.exec();
+    mBoard.startNewGame();
+}
 void HuntingMainWindow::onDimensionChanged(DimensionQ d)
 {
     mBoardDimension = d;
