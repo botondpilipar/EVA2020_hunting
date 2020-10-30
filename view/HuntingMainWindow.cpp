@@ -1,6 +1,10 @@
 #include "HuntingMainWindow.h"
 #include "ui_HuntingMainWindow.h"
 #include <QBrush>
+#include <QDrag>
+#include <QCommonStyle>
+
+#include <BoardGraphicUtility.h>
 
 HuntingMainWindow::HuntingMainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -13,11 +17,19 @@ HuntingMainWindow::HuntingMainWindow(QWidget *parent)
     , mHunterFiller(Qt::red)
 {
     ui->setupUi(this);
+    QCommonStyle commonStyle;
+    ui->up->setIcon(commonStyle.standardIcon(QStyle::SP_ArrowUp));
+    ui->down->setIcon(commonStyle.standardIcon(QStyle::SP_ArrowDown));
+    ui->left->setIcon(commonStyle.standardIcon(QStyle::SP_ArrowBack));
+    ui->right->setIcon(commonStyle.standardIcon(QStyle::SP_ArrowForward));
+    ui->up->setDisabled(true);
+    ui->down->setDisabled(true);
+    ui->left->setDisabled(true);
+    ui->right->setDisabled(true);
 
-//    mFileChooserDialog.exec();
-
-    this->setWindowTitle("Hunting");
+    this->setWindowTitle("Vadászat");
     this->setMouseTracking(true);
+    this->setAcceptDrops(true);
 
     QObject::connect(&mBoard, &HuntingBoard::boardChangedSignal, this, &HuntingMainWindow::onBoardChange);
     QObject::connect(&mBoard, &HuntingBoard::stepsTakenChangedSignal, this, &HuntingMainWindow::onStepsChanges);
@@ -40,26 +52,62 @@ HuntingMainWindow::~HuntingMainWindow()
 
 void HuntingMainWindow::mousePressEvent(QMouseEvent* event)
 {
-    const QPoint at(event->globalX(), event->globalY());
-    auto rectIt = std::find_if(mBoardCells.cbegin(), mBoardCells.cend(),
-                               [at] (const QRect& rect) { return rect.contains(at); });
-    if(rectIt != mBoardCells.end())
+    if(event->button() == Qt::LeftButton)
     {
-        from = rectangeToCoordinate(ui->playerArea->geometry(), *rectIt);
-    }
-}
-void HuntingMainWindow::mouseReleaseEvent(QMouseEvent* event)
-{
-    const QPoint at(event->globalX(), event->globalY());
-    auto rectIt = std::find_if(mBoardCells.cbegin(), mBoardCells.cend(),
-                               [at] (const QRect& rect) { return rect.contains(at); });
-    if(rectIt != mBoardCells.end())
-    {
-        DimensionQ to = rectangeToCoordinate(ui->playerArea->geometry(), *rectIt);
-        mBoard.movePlayer(from, to);
+        auto rectIt = std::find_if(mBoardCells.cbegin(), mBoardCells.cend(),
+                                [event] (const QRect& rect) { return rect.contains(event->pos()); });
+        if(rectIt != mBoardCells.end() && !isSelectionActive)
+        {
+            from = *rectIt;
+            isSelectionActive = true;
+            ui->up->setEnabled(true);
+            ui->down->setEnabled(true);
+            ui->left->setEnabled(true);
+            ui->right->setEnabled(true);
+        }
+        else if(rectIt != mBoardCells.end() && isSelectionActive)
+        {
+            isSelectionActive = false;
+            ui->up->setEnabled(false);
+            ui->down->setEnabled(false);
+            ui->left->setEnabled(false);
+            ui->right->setEnabled(false);
+            graphicStep(from, *rectIt);
+        }
     }
 }
 
+void HuntingMainWindow::mouseMoveEvent(QMouseEvent* event)
+{
+}
+
+void HuntingMainWindow::mouseReleaseEvent(QMouseEvent* event)
+{
+}
+
+void HuntingMainWindow::keyPressEvent(QKeyEvent* event)
+{
+    if(event->key() == Qt::Key_Up ||
+            event->key() == Qt::Key_W)
+    {
+        graphicStep(from, BoardGraphicUtility::shift(from, Direction::UP, from.height()));
+    }
+    else if(event->key() == Qt::Key_Down ||
+            event->key() == Qt::Key_S)
+    {
+        graphicStep(from, BoardGraphicUtility::shift(from, Direction::DOWN, from.height()));
+    }
+    else if(event->key() == Qt::Key_Left ||
+            event->key() == Qt::Key_A)
+    {
+        graphicStep(from, BoardGraphicUtility::shift(from, Direction::LEFT, from.width()));
+    }
+    else if(event->key() == Qt::Key_Right ||
+             event->key() == Qt::Key_D)
+     {
+         graphicStep(from, BoardGraphicUtility::shift(from, Direction::RIGHT, from.width()));
+     }
+}
 void HuntingMainWindow::fillBoardCells()
 {
     mBoardCells.clear();
@@ -147,7 +195,11 @@ void HuntingMainWindow::onBoardChange(PlayerCoordinatesPtr change)
 }
 void HuntingMainWindow::onStepsChanges(quint64 stepCount)
 {
+    if(stepCount % 2 == 0) { ui->stepping->setText("Vadász lép"); }
+    else { ui->stepping->setText("Préda lép"); }
+
     ui->pointCounter->display(static_cast<int>(stepCount));
+
 }
 void HuntingMainWindow::onGameOver(quint64, hunting::PlayerType){}
 void HuntingMainWindow::onDimensionChanged(DimensionQ d)
@@ -163,4 +215,12 @@ void HuntingMainWindow::onGameLoadRequested(bool)
 
 void HuntingMainWindow::onGameSaveRequested(bool)
 {
+}
+
+void HuntingMainWindow::graphicStep(const QRect& from, const QRect& to)
+{
+    const QRect geometry = ui->playerArea->geometry();
+    DimensionQ stepFrom = rectangeToCoordinate(geometry, from);
+    DimensionQ stepTo = rectangeToCoordinate(geometry, to);
+    mBoard.movePlayer(stepFrom, stepTo);
 }
