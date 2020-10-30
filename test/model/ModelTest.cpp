@@ -52,6 +52,8 @@ private:
     std::unique_ptr<QSignalSpy> mGameOverSignalSpy;
     std::unique_ptr<QSignalSpy> mBoardChangedSignalSpy;
     std::unique_ptr<QSignalSpy> mStepsTakenChangedSignalSpy;
+    std::unique_ptr<QSignalSpy> mDimensionChangedSignalSpy;
+    std::unique_ptr<QSignalSpy> mNewGameStartedSignalSpy;
     Serializer mSerializer;
     DimensionQ mDimension;
 };
@@ -93,6 +95,10 @@ void ModelTest::init()
                                                       SIGNAL(boardChangedSignal(PlayerCoordinatesPtr)));
     mStepsTakenChangedSignalSpy = std::make_unique<QSignalSpy>(mBoard.get(),
                                                       SIGNAL(stepsTakenChangedSignal(quint64)));
+    mDimensionChangedSignalSpy = std::make_unique<QSignalSpy>(mBoard.get(),
+                                                      SIGNAL(dimensionChangedSignal(DimensionQ)));
+    mNewGameStartedSignalSpy = std::make_unique<QSignalSpy>(mBoard.get(),
+                                                      SIGNAL(newGameSignal(PlayerCoordinatesPtr)));
 }
 
 void ModelTest::testGetInitialDimensions()
@@ -104,7 +110,7 @@ void ModelTest::testGetSetDimensions()
     DimensionQ newDimension(6, 6);
     mBoard->setDimensions(newDimension);
 
-    QCOMPARE(mBoardChangedSignalSpy->count(), 1);
+    QCOMPARE(mDimensionChangedSignalSpy->count(), 1);
     QCOMPARE(mBoard->getDimensions(), newDimension);
 }
 
@@ -125,8 +131,8 @@ void ModelTest::testStartNewGame()
 {
     mBoard->startNewGame();
 
-    QCOMPARE(mBoardChangedSignalSpy->count(), 1);
-    PlayerCoordinatesPtr playersOnBoard = qvariant_cast<PlayerCoordinatesPtr>(mBoardChangedSignalSpy->at(0).at(0));
+    QCOMPARE(mNewGameStartedSignalSpy->count(), 1);
+    PlayerCoordinatesPtr playersOnBoard = qvariant_cast<PlayerCoordinatesPtr>(mNewGameStartedSignalSpy->at(0).at(0));
 
     QCOMPARE(playersOnBoard->size(), 5);
 }
@@ -134,7 +140,7 @@ void ModelTest::testStartNewGame()
 void ModelTest::testPlayerPositionOnNewGame()
 {
     mBoard->startNewGame();
-    PlayerCoordinatesPtr playersOnBoard = qvariant_cast<PlayerCoordinatesPtr>(mBoardChangedSignalSpy->at(0).at(0));
+    PlayerCoordinatesPtr playersOnBoard = qvariant_cast<PlayerCoordinatesPtr>(mNewGameStartedSignalSpy->at(0).at(0));
 
     PlayerCoordinates hunters;
     QVector<DimensionQ> hunterPositions;
@@ -174,6 +180,7 @@ void ModelTest::testPauseGame()
 }
 void ModelTest::testContinueGame()
 {
+    mBoard->startNewGame();
     mBoard->pauseGame();
     mBoard->continueGame();
     DimensionQ from = {1, 5};

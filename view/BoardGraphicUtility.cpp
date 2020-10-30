@@ -34,3 +34,13 @@ QRect BoardGraphicUtility::shift(const QRect& from, Direction direction, int wit
     }
     return QRect(from.topLeft() + shiftCorner, from.bottomRight() + shiftCorner);
 }
+
+DimensionQ BoardGraphicUtility::fromLogicalCoordinate(const DimensionQ& from)
+{
+    return { from.first - 1, from.second - 1};
+}
+
+DimensionQ BoardGraphicUtility::toLogicalCoordinate(const DimensionQ& from)
+{
+    return { from.first + 1, from.second + 1};
+}

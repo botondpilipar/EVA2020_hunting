@@ -41,10 +41,15 @@ protected slots:
     void onStepsChanges(quint64);
     void onGameOver(quint64, hunting::PlayerType);
     void onDimensionChanged(DimensionQ);
+    void onNewGame(PlayerCoordinatesPtr);
 
     // Ui slots
     void onGameLoadRequested(bool);
     void onGameSaveRequested(bool);
+    void onUpButtonPushed();
+    void onDownButtonPushed();
+    void onLeftButtonPushed();
+    void onRightButtonPushed();
 private:
     Ui::HuntingMainWindow *ui;
     FileChooserDialog mFileChooserDialog;
@@ -56,13 +61,14 @@ private:
     QBrush mPreyFiller;
     QBrush mHunterFiller;
 
-    QVector<QRect> mBoardCells;
-    QVector<QRect> mHunters;
-    QRect mPrey;
+    QVector<QVector<QRect>> mBoardCells;
+    QVector<DimensionQ> mHunters;
+    DimensionQ mPrey;
 
     // Utility
-    QRect from;
+    DimensionQ from;
     bool isSelectionActive;
     void graphicStep(const QRect& from, const QRect& to);
+    void setPlayerSelected(bool);
 };
 #endif // HUNTINGMAINWINDOW_H
