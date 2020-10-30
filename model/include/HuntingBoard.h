@@ -34,7 +34,7 @@ public:
 
     //IGameBoard
     virtual DimensionQ getDimensions() const override { return mDimension; }
-    virtual void setDimensions(DimensionQ& dimension) override;
+    virtual void setDimensions(const DimensionQ& dimension) override;
 
     //IDataInitializable
     virtual void initialize(const HuntingBoardData& representation) override;

@@ -40,7 +40,7 @@ HuntingBoardData* HuntingBoard::save() const
                                 mPlayerMap);
 }
 
-void HuntingBoard::setDimensions(DimensionQ &dimension)
+void HuntingBoard::setDimensions(const DimensionQ &dimension)
 {
     mDimension = dimension;
     mMiddle = BoardUtility::middlePosition(mDimension);

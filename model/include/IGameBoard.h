@@ -22,7 +22,7 @@ class IGameBoard : public IGameControlUnit,
 {
 public:
     virtual DimensionQ getDimensions() const = 0;
-    virtual void setDimensions(DimensionQ&) = 0;
+    virtual void setDimensions(const DimensionQ&) = 0;
 };
 }
 }
