@@ -49,9 +49,10 @@ public:
     //ISettingsChangedObserver
     virtual void settingsChanged() override {}
 
-    void movePlayer(DimensionQ& from, DimensionQ& to);
+    virtual void movePlayer(const DimensionQ& from, const DimensionQ& to);
+    virtual bool isGameOverScenario() const;
+    virtual inline hunting::PlayerType getCurrentlyMoving() const { return mCurrentlyMoving; }
     static hunting::PlayerType getNextMove(hunting::PlayerType);
-    bool isGameOverScenario() const;
 
 private:
     Serializer& mSerializer;
@@ -70,6 +71,7 @@ signals:
     void boardChangedSignal(PlayerCoordinatesPtr newSetup);
     void stepsTakenChangedSignal(quint64 stepsTaken);
     void dimensionChangedSignal(DimensionQ newDimensions);
+    void newGameSignal(PlayerCoordinatesPtr newSetup);
 
 };
 }

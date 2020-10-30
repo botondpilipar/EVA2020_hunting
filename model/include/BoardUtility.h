@@ -7,10 +7,10 @@
 class BoardUtility
 {
 public:
-    static DimensionQ middlePosition(DimensionQ& boardDimensions);
-    static QVector<DimensionQ> cornerPositions(DimensionQ& boardDimension);
-    static bool isNeighboring(DimensionQ& l, DimensionQ& r);
-    static bool isValidDimension(DimensionQ& p);
+    static DimensionQ middlePosition(const DimensionQ& boardDimensions);
+    static QVector<DimensionQ> cornerPositions(const DimensionQ& boardDimension);
+    static bool isNeighboring(const DimensionQ& l, const DimensionQ& r);
+    static bool isValidDimension(const DimensionQ& p);
 
     static constexpr DimensionType smallestPosition() { return 1; }
 };

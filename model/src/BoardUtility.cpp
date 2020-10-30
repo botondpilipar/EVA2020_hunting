@@ -1,6 +1,6 @@
 #include <BoardUtility.h>
 
-DimensionQ BoardUtility::middlePosition(DimensionQ& boardDimensions)
+DimensionQ BoardUtility::middlePosition(const DimensionQ& boardDimensions)
 {
     if(!isValidDimension(boardDimensions)) { return {}; }
 
@@ -17,7 +17,7 @@ DimensionQ BoardUtility::middlePosition(DimensionQ& boardDimensions)
     return returnDimensions;
 }
 
-QVector<DimensionQ> BoardUtility::cornerPositions(DimensionQ& boardDimensions)
+QVector<DimensionQ> BoardUtility::cornerPositions(const DimensionQ& boardDimensions)
 {
     if(!isValidDimension(boardDimensions)) { return {}; }
 
@@ -27,7 +27,7 @@ QVector<DimensionQ> BoardUtility::cornerPositions(DimensionQ& boardDimensions)
                 DimensionQ(boardDimensions.first, 1)    };
 }
 
-bool BoardUtility::isNeighboring(DimensionQ& l, DimensionQ& r)
+bool BoardUtility::isNeighboring(const DimensionQ& l, const DimensionQ& r)
 {
     if(!(isValidDimension(l) && isValidDimension(r)))  { return false; }
     auto xDiff = static_cast<std::int64_t>(l.first - r.first);
@@ -36,7 +36,7 @@ bool BoardUtility::isNeighboring(DimensionQ& l, DimensionQ& r)
     return (totalDifference == 1);
 }
 
-bool BoardUtility::isValidDimension(DimensionQ &p)
+bool BoardUtility::isValidDimension(const DimensionQ &p)
 {
     return (p.first >= smallestPosition() && p.second >= smallestPosition());
 }

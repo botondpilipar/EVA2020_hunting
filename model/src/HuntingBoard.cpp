@@ -13,6 +13,7 @@ HuntingBoard::HuntingBoard(Serializer& serializer, DimensionQ& dimension)
     mStepsTaken = 0;
     mMiddle = BoardUtility::middlePosition(dimension);
     mCorners = BoardUtility::cornerPositions(dimension);
+    mCurrentlyMoving = hunting::PlayerType::HUNTER;
 }
 
 void HuntingBoard::initialize(const HuntingBoardData& representation)
@@ -54,18 +55,18 @@ void HuntingBoard::startNewGame()
     mStepsTaken = 0;
     mIsPaused = false;
     mPlayerMap.clear();
-    mPlayerMap.push_back(QPair<DimensionQ, PlayerType>(mMiddle, PlayerType::PREY));
+    mPlayerMap.push_back(PlayerIdPair(mMiddle, PlayerType::PREY));
 
-    for(auto position : mCorners) { mPlayerMap.push_back(QPair<DimensionQ, PlayerType>(position, PlayerType::HUNTER)); }
+    for(auto position : mCorners) { mPlayerMap.push_back(PlayerIdPair(position, PlayerType::HUNTER)); }
 
-    emit dimensionChangedSignal(mDimension);
-    emit boardChangedSignal(PlayerCoordinatesPtr(new PlayerCoordinates(mPlayerMap)));
+    emit stepsTakenChangedSignal(0);
+    emit newGameSignal(PlayerCoordinatesPtr(new PlayerCoordinates(mPlayerMap)));
 }
 
 void HuntingBoard::pauseGame() { mIsPaused = true; }
 void HuntingBoard::continueGame() { mIsPaused = false; }
 
-void HuntingBoard::movePlayer(DimensionQ& from, DimensionQ& to)
+void HuntingBoard::movePlayer(const DimensionQ& from, const DimensionQ& to)
 {
     if(mIsPaused) { return; }
     if(!BoardUtility::isNeighboring(from, to)) { return; }
@@ -84,7 +85,8 @@ void HuntingBoard::movePlayer(DimensionQ& from, DimensionQ& to)
     if(!isSpotOccupied)
     {
         moveCandidate->first = to;
-        emit boardChangedSignal(std::make_shared<PlayerCoordinates>(moveCandidate, moveCandidate + 1));
+        mCurrentlyMoving = getNextMove(mCurrentlyMoving);
+        emit boardChangedSignal(std::make_shared<PlayerCoordinates>(1, *moveCandidate));
         emit stepsTakenChangedSignal(++mStepsTaken);
     }
     else if(isGameOverScenario)
@@ -98,18 +100,13 @@ void HuntingBoard::movePlayer(DimensionQ& from, DimensionQ& to)
         emit gameOverSignal(mStepsTaken, isGameOverScenario ? PlayerType::HUNTER :
                                                                PlayerType::PREY);
     }
-    mCurrentlyMoving = getNextMove(mCurrentlyMoving);
 }
 
 PlayerType HuntingBoard::getNextMove(PlayerType type)
 {
-    switch (type)
-    {
-        case PlayerType::HUNTER:
-            return PlayerType::PREY;
-        case PlayerType::PREY:
-            return PlayerType::HUNTER;
-    }
+    if(type == PlayerType::HUNTER) { return PlayerType::PREY; }
+    else { return PlayerType::HUNTER; }
+
 }
 
 bool HuntingBoard::isGameOverScenario() const
