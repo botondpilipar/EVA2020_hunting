@@ -106,9 +106,9 @@
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>20</y>
+      <y>30</y>
       <width>631</width>
-      <height>511</height>
+      <height>501</height>
      </rect>
     </property>
    </widget>
@@ -122,8 +122,26 @@
      <height>21</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menuF_jl">
+    <property name="title">
+     <string>Fájl</string>
+    </property>
+    <addaction name="saveButton"/>
+    <addaction name="loadButton"/>
+   </widget>
+   <addaction name="menuF_jl"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
+  <action name="saveButton">
+   <property name="text">
+    <string>Mentés</string>
+   </property>
+  </action>
+  <action name="loadButton">
+   <property name="text">
+    <string>Betöltés</string>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections/>

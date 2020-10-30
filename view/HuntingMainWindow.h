@@ -34,10 +34,15 @@ protected:
     virtual DimensionQ rectangeToCoordinate(const QRect& area, const QRect& rect) const;
 
 protected slots:
+    // Board slots
     void onBoardChange(PlayerCoordinatesPtr);
     void onStepsChanges(quint64);
     void onGameOver(quint64, hunting::PlayerType);
     void onDimensionChanged(DimensionQ);
+
+    // Ui slots
+    void onGameLoadRequested(bool);
+    void onGameSaveRequested(bool);
 private:
     Ui::HuntingMainWindow *ui;
     FileChooserDialog mFileChooserDialog;
