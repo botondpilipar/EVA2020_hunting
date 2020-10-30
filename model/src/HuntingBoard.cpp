@@ -9,7 +9,7 @@ HuntingBoard::HuntingBoard(Serializer& serializer, DimensionQ& dimension)
 {
     mDimension = dimension;
     assert(dimension.first == dimension.second);
-    mMaxSteps = dimension.first;
+    mMaxSteps = 4*dimension.first;
     mStepsTaken = 0;
     mMiddle = BoardUtility::middlePosition(dimension);
     mCorners = BoardUtility::cornerPositions(dimension);
@@ -45,7 +45,7 @@ void HuntingBoard::setDimensions(DimensionQ &dimension)
     mDimension = dimension;
     mMiddle = BoardUtility::middlePosition(mDimension);
     mCorners = BoardUtility::cornerPositions(mDimension);
-    mMaxSteps = mDimension.first;
+    mMaxSteps = 4*mDimension.first;
 
     emit dimensionChangedSignal(mDimension);
     startNewGame();
@@ -56,6 +56,7 @@ void HuntingBoard::startNewGame()
     mIsPaused = false;
     mPlayerMap.clear();
     mPlayerMap.push_back(PlayerIdPair(mMiddle, PlayerType::PREY));
+    mCurrentlyMoving = PlayerType::HUNTER;
 
     for(auto position : mCorners) { mPlayerMap.push_back(PlayerIdPair(position, PlayerType::HUNTER)); }
 
@@ -69,6 +70,10 @@ void HuntingBoard::continueGame() { mIsPaused = false; }
 void HuntingBoard::movePlayer(const DimensionQ& from, const DimensionQ& to)
 {
     if(mIsPaused) { return; }
+    if(!BoardUtility::isValidDimension(from, mDimension) || !BoardUtility::isValidDimension(to, mDimension))
+    {
+        return;
+    }
     if(!BoardUtility::isNeighboring(from, to)) { return; }
     
     auto moveCandidate = std::find(mPlayerMap.begin(), mPlayerMap.end(), PlayerIdPair(from, mCurrentlyMoving));
@@ -76,7 +81,8 @@ void HuntingBoard::movePlayer(const DimensionQ& from, const DimensionQ& to)
     if(moveCandidate == mPlayerMap.end()) { return; }
     if(moveCandidate->second != mCurrentlyMoving) { return; }
 
-    auto secondCandidate = std::find(++moveCandidate, mPlayerMap.end(), PlayerIdPair(from, mCurrentlyMoving));
+    auto secondCandidate = std::find_if(mPlayerMap.begin(), mPlayerMap.end(),
+                                        [&](const auto& playerIdPair) { return playerIdPair.first == to; });
 
     // Another player has already occupied this spot
     const bool isSpotOccupied = secondCandidate != mPlayerMap.end();
@@ -100,6 +106,7 @@ void HuntingBoard::movePlayer(const DimensionQ& from, const DimensionQ& to)
         emit gameOverSignal(mStepsTaken, isGameOverScenario ? PlayerType::HUNTER :
                                                                PlayerType::PREY);
     }
+
 }
 
 PlayerType HuntingBoard::getNextMove(PlayerType type)
