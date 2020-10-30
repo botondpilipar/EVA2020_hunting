@@ -24,6 +24,8 @@ HuntingMainWindow::HuntingMainWindow(QWidget *parent)
     QObject::connect(&mBoard, &HuntingBoard::gameOverSignal, this, &HuntingMainWindow::onGameOver);
     QObject::connect(&mBoard, &HuntingBoard::dimensionChangedSignal, this, &HuntingMainWindow::onDimensionChanged);
 
+    QObject::connect(ui->saveButton, &QAction::triggered, this, &HuntingMainWindow::onGameSaveRequested);
+    QObject::connect(ui->loadButton, &QAction::triggered, this, &HuntingMainWindow::onGameLoadRequested);
 
     mFileChooserDialog.setDisplayedDirectory(mSerializer.getWorkingDirectory());
     mBoardSeparator.setWidth(1);
@@ -154,4 +156,11 @@ void HuntingMainWindow::onDimensionChanged(DimensionQ d)
     fillBoardCells();
 }
 
+void HuntingMainWindow::onGameLoadRequested(bool)
+{
+    mFileChooserDialog.exec();
+}
 
+void HuntingMainWindow::onGameSaveRequested(bool)
+{
+}
