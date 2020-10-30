@@ -42,7 +42,9 @@ HuntingMainWindow::HuntingMainWindow(QWidget *parent)
     QObject::connect(ui->loadButton, &QAction::triggered, this, &HuntingMainWindow::onGameLoadRequested);
 
     QObject::connect(ui->newGameButton, &QPushButton::clicked, this, [this] { mBoard.startNewGame(); });
-
+    QObject::connect(ui->dimension3Button, &QPushButton::clicked, this, [this] { mBoard.setDimensions({3, 3}); });
+    QObject::connect(ui->dimension5Button, &QPushButton::clicked, this, [this] { mBoard.setDimensions({5, 5}); });
+    QObject::connect(ui->dimension7Button, &QPushButton::clicked, this, [this] { mBoard.setDimensions({7, 7}); });
 
     QObject::connect(&mBoard, &HuntingBoard::boardChangedSignal, this, &HuntingMainWindow::onBoardChange);
     QObject::connect(&mBoard, &HuntingBoard::stepsTakenChangedSignal, this, &HuntingMainWindow::onStepsChanges);
