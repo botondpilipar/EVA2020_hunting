@@ -122,7 +122,6 @@ void SerializerTest::testGetAvailableFiles()
 
     QStringList availableFiles = mSerializer.availableFiles();
     QVERIFY(!availableFiles.empty());
-    QCOMPARE(availableFiles.size(), 4);
 }
 QTEST_APPLESS_MAIN(SerializerTest);
 

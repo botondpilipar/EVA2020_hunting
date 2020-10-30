@@ -165,8 +165,9 @@ void ModelTest::testMovePlayer()
     DimensionQ moveTo = {3, 5};
     mBoard->movePlayer(aHunterDimension, moveTo);
 
-    QCOMPARE(mBoardChangedSignalSpy->count(), 2);
-    PlayerCoordinatesPtr change = qvariant_cast<PlayerCoordinatesPtr>(mBoardChangedSignalSpy->at(1).at(0));
+    QCOMPARE(mBoardChangedSignalSpy->count(), 1);
+    QCOMPARE(mNewGameStartedSignalSpy->count(), 1);
+    PlayerCoordinatesPtr change = qvariant_cast<PlayerCoordinatesPtr>(mBoardChangedSignalSpy->at(0).at(0));
     QCOMPARE(change->size(), 1);
 }
 void ModelTest::testPauseGame()

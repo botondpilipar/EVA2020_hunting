@@ -13,7 +13,8 @@ Serializer::Serializer() : mWorkingDirectory(QDir::currentPath())
         if(!successfull) { throw DirectoryException(saveDirectoryPath); }
 
     }
-    mWorkingDirectory.setCurrent(mWorkingDirectory.relativeFilePath(saveDirectoryPath));
+    bool success = mWorkingDirectory.cd(mWorkingDirectory.relativeFilePath(saveDirectoryPath));
+    assert(success);
 }
 void Serializer::serialize(const QDataStreamSerializable& input, const QString& fileName)
 {

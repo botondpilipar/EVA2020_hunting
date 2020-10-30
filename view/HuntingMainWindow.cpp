@@ -11,12 +11,13 @@ HuntingMainWindow::HuntingMainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::HuntingMainWindow)
     , mSerializer()
+    , mFileDialog(this, "Válasszon célfájlt!", mSerializer.getWorkingDirectory())
     , mBoardDimension(5, 5)
     , mBoard(mSerializer, mBoardDimension)
-    , mBoardCells(mBoardDimension.first, QVector<QRect>(mBoardDimension.second, QRect()))
     , mBoardSeparator(Qt::darkBlue)
     , mPreyFiller(Qt::green)
     , mHunterFiller(Qt::red)
+    , mBoardCells(mBoardDimension.first, QVector<QRect>(mBoardDimension.second, QRect()))
 {
     ui->setupUi(this);
     QCommonStyle commonStyle;
@@ -53,8 +54,8 @@ HuntingMainWindow::HuntingMainWindow(QWidget *parent)
     QObject::connect(&mBoard, &HuntingBoard::newGameSignal, this, &HuntingMainWindow::onNewGame);
 
 
-
-    mFileChooserDialog.setDisplayedDirectory(mSerializer.getWorkingDirectory());
+    const QString& workingDirectory = mSerializer.getWorkingDirectory();
+    mFileChooserDialog.setDisplayedDirectory(workingDirectory);
     mBoardSeparator.setWidth(1);
 
     mBoard.startNewGame();
@@ -275,11 +276,30 @@ void HuntingMainWindow::onDimensionChanged(DimensionQ d)
 
 void HuntingMainWindow::onGameLoadRequested(bool)
 {
-    mFileChooserDialog.exec();
+    QUrl fileSelected;
+    QObject::connect(&mFileDialog, &QFileDialog::currentChanged, this, [&](QUrl selected) { fileSelected = selected; });
+    mFileDialog.exec();
+    if(!fileSelected.isEmpty())
+    {
+        mBoard.loadFile(fileSelected.fileName());
+    }
 }
 
 void HuntingMainWindow::onGameSaveRequested(bool)
 {
+    QUrl fileSelected;
+    QObject::connect(&mFileDialog, &QFileDialog::currentChanged, this, [&](QUrl selected) { fileSelected = selected; });
+    mFileDialog.exec();
+
+    if(fileSelected.isEmpty())
+    {
+        QString generatedFileName = Serializer::generateFileName();
+        mBoard.saveFile(generatedFileName);
+    }
+    else
+    {
+        mBoard.saveFile(fileSelected.fileName());
+    }
 }
 
 void HuntingMainWindow::onUpButtonPushed()

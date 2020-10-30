@@ -49,9 +49,14 @@ public:
     //ISettingsChangedObserver
     virtual void settingsChanged() override {}
 
+    //Own methods
     virtual void movePlayer(const DimensionQ& from, const DimensionQ& to);
     virtual bool isGameOverScenario() const;
     virtual inline hunting::PlayerType getCurrentlyMoving() const { return mCurrentlyMoving; }
+
+    virtual bool saveFile(const QString& fileName);
+    virtual bool loadFile(const QString& fileName);
+
     static hunting::PlayerType getNextMove(hunting::PlayerType);
 
 private:

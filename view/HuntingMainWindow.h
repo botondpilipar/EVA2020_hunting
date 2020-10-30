@@ -10,6 +10,7 @@
 #include <QPainter>
 #include <QStateMachine>
 #include <QMouseEvent>
+#include <QFileDialog>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class HuntingMainWindow; }
@@ -54,6 +55,7 @@ private:
     Ui::HuntingMainWindow *ui;
     FileChooserDialog mFileChooserDialog;
     Serializer mSerializer;
+    QFileDialog mFileDialog;
     DimensionQ mBoardDimension;
     HuntingBoard mBoard;
 

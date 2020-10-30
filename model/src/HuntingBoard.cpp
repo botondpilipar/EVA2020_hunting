@@ -27,7 +27,7 @@ void HuntingBoard::initialize(const HuntingBoardData& representation)
     mCorners = BoardUtility::cornerPositions(mDimension);
 
     emit dimensionChangedSignal(mDimension);
-    emit boardChangedSignal(std::make_shared<PlayerCoordinates>(mPlayerMap));
+    emit newGameSignal(std::make_shared<PlayerCoordinates>(mPlayerMap));
     emit stepsTakenChangedSignal(mStepsTaken);
 }
 
@@ -123,4 +123,24 @@ bool HuntingBoard::isGameOverScenario() const
     auto hunter = std::find_if(mPlayerMap.begin(), mPlayerMap.end(),
                                [prey](const auto& p) { return p.first == prey->first; });
     return (hunter != mPlayerMap.end());
+}
+
+bool HuntingBoard::saveFile(const QString& fileName)
+{
+    try {
+        std::unique_ptr<HuntingBoardData> data(this->save());
+        mSerializer.serialize(*data, fileName);
+    }  catch (std::exception e) {
+        return false;
+    }
+    return true;
+}
+
+bool HuntingBoard::loadFile(const QString& fileName)
+{
+    HuntingBoardData data;
+    bool success = mSerializer.deserialize(data, fileName);
+    this->initialize(data);
+
+    return success;
 }
