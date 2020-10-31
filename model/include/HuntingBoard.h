@@ -53,11 +53,13 @@ public:
     virtual void movePlayer(const DimensionQ& from, const DimensionQ& to);
     virtual bool isGameOverScenario() const;
     virtual inline hunting::PlayerType getCurrentlyMoving() const { return mCurrentlyMoving; }
+    virtual bool isOccupied(const DimensionQ& spot) const;
 
     virtual bool saveFile(const QString& fileName);
     virtual bool loadFile(const QString& fileName);
 
     static hunting::PlayerType getNextMove(hunting::PlayerType);
+
 
 private:
     Serializer& mSerializer;

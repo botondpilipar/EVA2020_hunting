@@ -44,6 +44,7 @@ HuntingBoardData* HuntingBoard::save() const
 void HuntingBoard::setDimensions(const DimensionQ &dimension)
 {
     mDimension = dimension;
+    mUtility.setDimensions(mDimension);
     mMiddle = mUtility.middlePosition();
     mCorners = mUtility.cornerPositions();
     mMaxSteps = 4*mDimension.first;
@@ -87,7 +88,8 @@ void HuntingBoard::movePlayer(const DimensionQ& from, const DimensionQ& to)
 
     // Another player has already occupied this spot
     const bool isSpotOccupied = secondCandidate != mPlayerMap.end();
-    const bool isGameOverScenario = isSpotOccupied && moveCandidate->second != secondCandidate->second;
+    bool haveReachedMaxSteps = false;
+    bool isPlayerSurrounded = false;
 
     if(!isSpotOccupied)
     {
@@ -95,17 +97,32 @@ void HuntingBoard::movePlayer(const DimensionQ& from, const DimensionQ& to)
         mCurrentlyMoving = getNextMove(mCurrentlyMoving);
         emit boardChangedSignal(std::make_shared<PlayerCoordinates>(1, *moveCandidate));
         emit stepsTakenChangedSignal(++mStepsTaken);
-    }
-    else if(isGameOverScenario)
-    {
-        ++mStepsTaken;
-        emit gameOverSignal(mStepsTaken, PlayerType::HUNTER);
+        haveReachedMaxSteps = (mStepsTaken == mMaxSteps);
     }
 
-    if(mMaxSteps == mStepsTaken)
+    if(!isSpotOccupied && moveCandidate->second == PlayerType::HUNTER)
     {
-        emit gameOverSignal(mStepsTaken, isGameOverScenario ? PlayerType::HUNTER :
-                                                               PlayerType::PREY);
+        // Check game over scenario whether prey cannot step
+        auto prey = std::find_if(mPlayerMap.begin(), mPlayerMap.end(),
+                                 [](const auto& player) { return player.second == PlayerType::PREY; });
+        assert(prey != mPlayerMap.end());
+        QList<DimensionQ> possibleSteps = mUtility.possibleSteps(prey->first);
+
+        isPlayerSurrounded = std::all_of(possibleSteps.begin(), possibleSteps.end(),
+                                                    [this](const DimensionQ& pos) { return this->isOccupied(pos); });
+    }
+
+    if(isPlayerSurrounded && haveReachedMaxSteps)
+    {
+        emit gameOverSignal(mStepsTaken, PlayerType::EITHER);
+    }
+    else if(isPlayerSurrounded)
+    {
+        emit gameOverSignal(mStepsTaken, PlayerType::HUNTER);
+    }
+    else if(haveReachedMaxSteps)
+    {
+        emit gameOverSignal(mStepsTaken, PlayerType::PREY);
     }
 
 }
@@ -126,6 +143,12 @@ bool HuntingBoard::isGameOverScenario() const
     return (hunter != mPlayerMap.end());
 }
 
+bool HuntingBoard::isOccupied(const DimensionQ& spot) const
+{
+    return std::find_if(mPlayerMap.begin(), mPlayerMap.end(),
+                        [spot](const auto& player) { return player.first == spot; })
+            != mPlayerMap.end();
+}
 bool HuntingBoard::saveFile(const QString& fileName)
 {
     try {
