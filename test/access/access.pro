@@ -14,8 +14,9 @@ TEMPLATE = app
 SOURCES += \
     AccessTest.cpp
 
-
-unix|win32: LIBS += -L$$OUT_PWD/../../access/ -laccess
+win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../../access/release/ -laccess
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../../access/debug/ -laccess
+else:unix: LIBS += -L$$OUT_PWD/../../access/ -laccess
 
 INCLUDEPATH += $$PWD/../../access
 DEPENDPATH += $$PWD/../../access
