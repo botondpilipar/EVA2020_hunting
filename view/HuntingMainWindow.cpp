@@ -5,7 +5,7 @@
 #include <QCommonStyle>
 #include <QMessageBox>
 
-#include <BoardGraphicUtility.h>
+#include <BoardUtility.h>
 
 HuntingMainWindow::HuntingMainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -89,7 +89,7 @@ void HuntingMainWindow::mousePressEvent(QMouseEvent* event)
         {
             DimensionQ to = {columnIndex, rowIndex};
             setPlayerSelected(false);
-            mBoard.movePlayer(BoardGraphicUtility::toLogicalCoordinate(from), BoardGraphicUtility::toLogicalCoordinate(to));
+            mBoard.movePlayer(BoardUtility::toLogicalCoordinate(from), BoardUtility::toLogicalCoordinate(to));
         }
     }
 }
@@ -108,24 +108,24 @@ void HuntingMainWindow::keyPressEvent(QKeyEvent* event)
     if(event->key() == Qt::Key_Up ||
             event->key() == Qt::Key_W)
     {
-        to = BoardGraphicUtility::shiftDimension(from, Direction::UP, 1);
+        to = BoardUtility::shiftDimension(from, Direction::UP, 1);
     }
     else if(event->key() == Qt::Key_Down ||
             event->key() == Qt::Key_S)
     {
-        to = BoardGraphicUtility::shiftDimension(from, Direction::DOWN, 1);
+        to = BoardUtility::shiftDimension(from, Direction::DOWN, 1);
     }
     else if(event->key() == Qt::Key_Left ||
             event->key() == Qt::Key_A)
     {
-        to = BoardGraphicUtility::shiftDimension(from, Direction::LEFT, 1);
+        to = BoardUtility::shiftDimension(from, Direction::LEFT, 1);
     }
     else if(event->key() == Qt::Key_Right ||
              event->key() == Qt::Key_D)
      {
-        to = BoardGraphicUtility::shiftDimension(from, Direction::RIGHT, 1);
+        to = BoardUtility::shiftDimension(from, Direction::RIGHT, 1);
      }
-    mBoard.movePlayer(BoardGraphicUtility::toLogicalCoordinate(from), BoardGraphicUtility::toLogicalCoordinate(to));
+    mBoard.movePlayer(BoardUtility::toLogicalCoordinate(from), BoardUtility::toLogicalCoordinate(to));
     setPlayerSelected(false);
 }
 void HuntingMainWindow::fillBoardCells()
@@ -217,12 +217,12 @@ void HuntingMainWindow::onNewGame(PlayerCoordinatesPtr change)
         {
             case HUNTER:
             {
-                mHunters.push_back(BoardGraphicUtility::fromLogicalCoordinate(p.first));
+                mHunters.push_back(BoardUtility::fromLogicalCoordinate(p.first));
             }
                 break;
             case PREY:
             {
-                mPrey = BoardGraphicUtility::fromLogicalCoordinate(p.first);
+                mPrey = BoardUtility::fromLogicalCoordinate(p.first);
             }
         }
     }
@@ -243,12 +243,12 @@ void HuntingMainWindow::onBoardChange(PlayerCoordinatesPtr change)
             {
                 auto toChange = std::find(mHunters.begin(), mHunters.end(), from);
                 int pos = std::distance(mHunters.begin(), toChange);
-                mHunters[pos] = BoardGraphicUtility::fromLogicalCoordinate(p.first);
+                mHunters[pos] = BoardUtility::fromLogicalCoordinate(p.first);
             }
                 break;
             case PREY:
             {
-                mPrey = BoardGraphicUtility::fromLogicalCoordinate(p.first);
+                mPrey = BoardUtility::fromLogicalCoordinate(p.first);
             }
             break;
         }
@@ -304,26 +304,26 @@ void HuntingMainWindow::onGameSaveRequested(bool)
 
 void HuntingMainWindow::onUpButtonPushed()
 {
-    DimensionQ to = BoardGraphicUtility::shiftDimension(from, Direction::UP, 1);
-    mBoard.movePlayer(BoardGraphicUtility::toLogicalCoordinate(from), BoardGraphicUtility::toLogicalCoordinate(to));
+    DimensionQ to = BoardUtility::shiftDimension(from, Direction::UP, 1);
+    mBoard.movePlayer(BoardUtility::toLogicalCoordinate(from), BoardUtility::toLogicalCoordinate(to));
     setPlayerSelected(false);
 }
 void HuntingMainWindow::onDownButtonPushed()
 {
-    DimensionQ to = BoardGraphicUtility::shiftDimension(from, Direction::DOWN, 1);
-    mBoard.movePlayer(BoardGraphicUtility::toLogicalCoordinate(from), BoardGraphicUtility::toLogicalCoordinate(to));
+    DimensionQ to = BoardUtility::shiftDimension(from, Direction::DOWN, 1);
+    mBoard.movePlayer(BoardUtility::toLogicalCoordinate(from), BoardUtility::toLogicalCoordinate(to));
     setPlayerSelected(false);
 }
 void HuntingMainWindow::onLeftButtonPushed()
 {
-    DimensionQ to = BoardGraphicUtility::shiftDimension(from, Direction::LEFT, 1);
-    mBoard.movePlayer(BoardGraphicUtility::toLogicalCoordinate(from), BoardGraphicUtility::toLogicalCoordinate(to));
+    DimensionQ to = BoardUtility::shiftDimension(from, Direction::LEFT, 1);
+    mBoard.movePlayer(BoardUtility::toLogicalCoordinate(from), BoardUtility::toLogicalCoordinate(to));
     setPlayerSelected(false);
 }
 void HuntingMainWindow::onRightButtonPushed()
 {
-    DimensionQ to = BoardGraphicUtility::shiftDimension(from, Direction::RIGHT, 1);
-    mBoard.movePlayer(BoardGraphicUtility::toLogicalCoordinate(from), BoardGraphicUtility::toLogicalCoordinate(to));
+    DimensionQ to = BoardUtility::shiftDimension(from, Direction::RIGHT, 1);
+    mBoard.movePlayer(BoardUtility::toLogicalCoordinate(from), BoardUtility::toLogicalCoordinate(to));
     setPlayerSelected(false);
 }
 void HuntingMainWindow::graphicStep(const QRect& from, const QRect& to)
