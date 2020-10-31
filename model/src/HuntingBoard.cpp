@@ -1,4 +1,3 @@
-#include <BoardUtility.h>
 #include "HuntingBoard.h"
 
 using namespace kd417d::eva;
@@ -8,23 +7,25 @@ HuntingBoard::HuntingBoard(Serializer& serializer, DimensionQ& dimension)
     : HuntingBoard(serializer)
 {
     mDimension = dimension;
+    mUtility.setDimensions(dimension);
     assert(dimension.first == dimension.second);
     mMaxSteps = 4*dimension.first;
     mStepsTaken = 0;
-    mMiddle = BoardUtility::middlePosition(dimension);
-    mCorners = BoardUtility::cornerPositions(dimension);
+    mMiddle = mUtility.middlePosition();
+    mCorners = mUtility.BoardUtility::cornerPositions();
     mCurrentlyMoving = hunting::PlayerType::HUNTER;
 }
 
 void HuntingBoard::initialize(const HuntingBoardData& representation)
 {
     mDimension = representation.dimension;
+    mUtility.setDimensions(mDimension);
     mPlayerMap = representation.playerSet;
     mCurrentlyMoving = representation.nextToMove;
     mMaxSteps = representation.maxStep;
     mStepsTaken = representation.stepsTaken;
-    mMiddle = BoardUtility::middlePosition(mDimension);
-    mCorners = BoardUtility::cornerPositions(mDimension);
+    mMiddle = mUtility.middlePosition();
+    mCorners = mUtility.cornerPositions();
 
     emit dimensionChangedSignal(mDimension);
     emit newGameSignal(std::make_shared<PlayerCoordinates>(mPlayerMap));
@@ -43,8 +44,8 @@ HuntingBoardData* HuntingBoard::save() const
 void HuntingBoard::setDimensions(const DimensionQ &dimension)
 {
     mDimension = dimension;
-    mMiddle = BoardUtility::middlePosition(mDimension);
-    mCorners = BoardUtility::cornerPositions(mDimension);
+    mMiddle = mUtility.middlePosition();
+    mCorners = mUtility.cornerPositions();
     mMaxSteps = 4*mDimension.first;
 
     emit dimensionChangedSignal(mDimension);
@@ -70,7 +71,7 @@ void HuntingBoard::continueGame() { mIsPaused = false; }
 void HuntingBoard::movePlayer(const DimensionQ& from, const DimensionQ& to)
 {
     if(mIsPaused) { return; }
-    if(!BoardUtility::isValidDimension(from, mDimension) || !BoardUtility::isValidDimension(to, mDimension))
+    if(!mUtility.isValidDimension(from) || !mUtility.isValidDimension(to))
     {
         return;
     }

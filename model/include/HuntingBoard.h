@@ -9,7 +9,7 @@
 #include <HuntingBoardData.h>
 #include <Serializer.h>
 #include <CircularVariable.hpp>
-
+#include <BoardUtility.h>
 
 namespace kd417d {
 namespace eva {
@@ -67,7 +67,7 @@ private:
     quint64 mMaxSteps;
     bool mIsPaused;
     hunting::PlayerType mCurrentlyMoving;
-
+    BoardUtility mUtility;
 
     DimensionQ mMiddle;
     QVector<DimensionQ> mCorners;

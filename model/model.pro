@@ -8,6 +8,7 @@ DEFINES = MODEL
 
 HEADERS += \
     include/BoardUtility.h \
+    include/Direction.h \
     include/HuntingBoard.h \
     include/HuntingBoardData.h \
     include/HuntingTypes.h \
