@@ -14,7 +14,8 @@ namespace hunting {
 enum PlayerType : int
 {
     HUNTER,
-    PREY
+    PREY,
+    EITHER
 };
 
 
